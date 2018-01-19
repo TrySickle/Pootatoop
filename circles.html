@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Circles</title>
+  <link rel="stylesheet" type="text/css" href="circles.css">
+  <script type="text/javascript" src="howler.min.js"></script>
+  <script type="text/javascript" src="paper-full.min.js"></script>
+  <script type="text/paperscript" canvas="myCanvas">
+    
+    var circles = [];
+    var sounds = [
+      new Howl({src: ['sounds/bubbles.mp3']}),
+      new Howl({src: ['sounds/clay.mp3']}),
+      new Howl({src: ['sounds/confetti.mp3']}),
+      new Howl({src: ['sounds/corona.mp3']}),
+      new Howl({src: ['sounds/dotted-spiral.mp3']}),
+      new Howl({src: ['sounds/flash-1.mp3']}),
+      new Howl({src: ['sounds/flash-2.mp3']}),
+      new Howl({src: ['sounds/flash-3.mp3']}),
+      new Howl({src: ['sounds/glimmer.mp3']}),
+      new Howl({src: ['sounds/moon.mp3']}),
+      new Howl({src: ['sounds/pinwheel.mp3']}),
+      new Howl({src: ['sounds/piston-1.mp3']}),
+      new Howl({src: ['sounds/piston-2.mp3']}),
+      new Howl({src: ['sounds/piston-3.mp3']}),
+      new Howl({src: ['sounds/prism-1.mp3']}),
+      new Howl({src: ['sounds/prism-2.mp3']}),
+      new Howl({src: ['sounds/prism-3.mp3']}),
+      new Howl({src: ['sounds/splits.mp3']}),
+      new Howl({src: ['sounds/squiggle.mp3']}),
+      new Howl({src: ['sounds/strike.mp3']}),
+      new Howl({src: ['sounds/suspension.mp3']}),
+      new Howl({src: ['sounds/timer.mp3']}),
+      new Howl({src: ['sounds/ufo.mp3']}),
+      new Howl({src: ['sounds/veil.mp3']}),
+      new Howl({src: ['sounds/wipe.mp3']}),
+      new Howl({src: ['sounds/zig-zag.mp3']})
+    ];
+    var keys = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+    var colors = ["#CD6155", "#EC7063", "#AF7AC5", "#A569BD", "#5499C7", "#5DADE2", "#1ABC9C", "#16A085", "#27AE60", "#52BE80", "#2ECC71", "#F1C40F", "#F39C12", "#D68910", "#D35400", "#922B21", "#76448A", "#28B463", "#935116", "#2874A6", "#239B56", "#BB8FCE", "#F9E79F", "#7D3C98", "#D4AC0D", "#AED6F1"];
+    function playSound(key) {
+      if (keys.indexOf(key) >= 0) {
+        sounds[keys.indexOf(key)].play();
+      }
+    }
+    
+    function addCircle(key) {
+      if (keys.indexOf(key) >= 0) {
+        var radius = 500;
+        var animatedCircle = new Path.Circle(new Point(Math.random() * view.size.width, Math.random() * view.size.height), radius);
+        animatedCircle.fillColor = getColor(key);
+        circles.push(animatedCircle);
+      }
+    }
+
+    function getColor(key) {
+      if (keys.indexOf(key) >= 0) {
+        return colors[keys.indexOf(key)];
+      }
+    }
+
+    function onKeyDown(event) {
+      addCircle(event.key);  
+      
+      playSound(event.key);
+    }
+
+    function onFrame(event) {
+      for (var i = 0; i < circles.length; i++) {
+        circles[i].fillColor.hue += 1;
+        circles[i].scale(.90);
+        if (circles[i].area <= 1) {
+          circles[i].remove();
+          circles.splice(i, 1);
+          i--;
+        }
+      }
+    }
+  </script>
+</head>
+<body>
+  <canvas id="myCanvas" resize></canvas>
+</body>
+</html>
